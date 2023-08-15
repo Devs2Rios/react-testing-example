@@ -1,34 +1,40 @@
-import { render, screen } from "@testing-library/react";
-import Greeting from "./Greeting";
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import Greeting from './Greeting';
+import { act } from 'react-dom/test-utils';
 
 // Testing suites are groups of related tests and start use the describe() function to group the tests:
-describe("Greeting component", () => {
+describe('Greeting component', () => {
     // test() is globally available
     test('Renders "Hello World"', () => {
         // Arrange
         render(<Greeting />);
-        // Act
-        // ...
         // Assert
         const helloWorldElement = screen.getByText(/Hello World/i);
         expect(helloWorldElement).toBeInTheDocument();
     });
-    test('Has a greeting"', () => {
+    test('Has a greeting', () => {
         render(<Greeting />);
         const greetingParagraph = screen.getByText(/nice to meet you/i);
         expect(greetingParagraph).toBeInTheDocument();
     });
+    test('Greeting has changed', () => {
+        render(<Greeting />);
+        const newGreeting = 'Good to see you again';
+        const customGreetingInput = screen.getByPlaceholderText(
+            'Enter custom greeting'
+        );
+        const greetingParagraph = screen.getByText(/nice to meet you/i);
+        expect(greetingParagraph).toBeInTheDocument();
+        const setCustomGreetingButton = screen.getByRole('button');
+        // Act
+        fireEvent.change(customGreetingInput, {
+            target: { value: newGreeting },
+        });
+        act(() => setCustomGreetingButton.click());
+        // Assert
+        const customGreetingParagraph = screen.getByText(newGreeting);
+        expect(greetingParagraph).not.toBeInTheDocument();
+        expect(customGreetingParagraph).toBeInTheDocument();
+    });
 });
-
-/*
-PASS  src/components/Greeting.test.tsx
-Greeting component
-✓ Renders "Hello World" (25 ms)
-✓ Has a greeting" (3 ms)
-
-Test Suites: 1 passed, 1 total
-Tests:       2 passed, 2 total
-Snapshots:   0 total
-Time:        2.716 s
-Ran all test suites related to changed files.
-*/
