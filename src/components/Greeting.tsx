@@ -1,5 +1,6 @@
 import { useState, MouseEventHandler } from 'react';
-
+import Greet from './Greet';
+import Async from './Async';
 const defaultGreeting = "It's nice to meet you!";
 
 export default function Greeting() {
@@ -13,8 +14,8 @@ export default function Greeting() {
     return (
         <div>
             <h2>Hello World!</h2>
-            {!customGreeting && <p>{defaultGreeting}</p>}
-            {customGreeting && <p>{customGreeting}</p>}
+            {!customGreeting && <Greet text={defaultGreeting} />}
+            {customGreeting && <Greet text={customGreeting} />}
             <input
                 value={customGreeting || ''}
                 type='text'
@@ -22,6 +23,7 @@ export default function Greeting() {
                 onChange={e => setCustomGreeting(e.target.value)}
             />
             <button onClick={handleCustomGreeting}>Set custom greeting</button>
+            <Async />
         </div>
     );
 }

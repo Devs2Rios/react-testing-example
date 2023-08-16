@@ -1,7 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import Greeting from './Greeting';
 import { act } from 'react-dom/test-utils';
+import Greeting from './Greeting';
 
 // Testing suites are groups of related tests and start use the describe() function to group the tests:
 describe('Greeting component', () => {
